@@ -7,7 +7,7 @@ from oauth2client.service_account import ServiceAccountCredentials
 from datetime import datetime
 from streamlit_webrtc import webrtc_streamer, WebRtcMode, RTCConfiguration
 
-from .motiontracker import VideoProcessor
+from .computervision.motiontracker import VideoProcessor
 
 
 def app(self):
