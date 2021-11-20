@@ -11,7 +11,7 @@ from .motiontracker import VideoProcessor
 
 
 def app(self):
-    st.header("Logger")
+    st.header("Security Camera Gateway")
 
     # Set up RTC config for https protocol
     RTC_CONFIGURATION = RTCConfiguration(
@@ -32,29 +32,10 @@ def app(self):
         sheet = client.open('parkcorps-master').sheet1
     except:
         pass
-
-    option = 0
     name = st.selectbox('Parking Spot Selection',
                         self.parking_spaces_master['name'])
 
     st.write('You selected: ', name)
-
-    availability = int(float(GetValue(self, name, 'available')))
-
-    if(availability):
-        st.markdown("#### Spot available")
-    else:
-        st.markdown("#### Spot unavailable")
-
-    st.button('Switch', on_click=BtnUpdateAvailability,
-              args=(sheet, name, availability))
-
-    timestamp = GetValue(self, name, 'timestamp')
-    timestamp_label = "###### _Updated on " + timestamp + "_"
-    st.markdown(timestamp_label)
-
-    # Computer Vision
-    st.subheader('Computer Vision')
 
     webrtc_ctx = webrtc_streamer(
         key="motion-tracker",
@@ -64,13 +45,6 @@ def app(self):
         media_stream_constraints={"video": True, "audio": False},
         async_processing=True,
     )
-
-
-def BtnUpdateAvailability(sheet, name, availability):
-    if(availability):
-        UpdateAvailability(sheet, name, 0)
-    else:
-        UpdateAvailability(sheet, name, 1)
 
 
 def UpdateAvailability(sheet, name, value):
